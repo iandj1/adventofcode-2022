@@ -1,11 +1,7 @@
-require 'set'
-
 start = Time.now
 
 input = File.open("inputs/4-sample.txt")
 input = File.open("inputs/4.txt")
-
-
 
 def range_contains(a, b)
     if a.include?(b.first) && a.include?(b.last)
