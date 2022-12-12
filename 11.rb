@@ -66,7 +66,7 @@ input.read.split("Monkey").each do |monkey|
 end
 
 rounds = 10000
-rounds.times.with_index do |index|
+rounds.times do |index|
   Monkey.list.each do |monkey|
     monkey.take_turn(false)
   end
