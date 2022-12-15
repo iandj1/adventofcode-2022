@@ -1,5 +1,7 @@
 start = Time.now
 
+require 'set'
+
 input = File.open('inputs/14-sample.txt')
 input = File.open('inputs/14.txt')
 
