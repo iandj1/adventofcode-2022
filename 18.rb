@@ -19,17 +19,26 @@ max_y = rock_coords.map{|coord| coord[1]}.max
 min_z = rock_coords.map{|coord| coord[2]}.min
 max_z = rock_coords.map{|coord| coord[2]}.max
 
+def neighbours(coord)
+  x,y,z = coord
+  [
+    [x+1,y,z],
+    [x-1,y,z],
+    [x,y+1,z],
+    [x,y-1,z],
+    [x,y,z+1],
+    [x,y,z-1]
+  ]
+end
+
+
 def surface_area_coords(coords)
   exposed = 0
   air_coords = []
   coords.each do |coord|
-    x,y,z = coord
-    air_coords << [x+1,y,z] if !coords.include?([x+1,y,z])
-    air_coords << [x-1,y,z] if !coords.include?([x-1,y,z])
-    air_coords << [x,y+1,z] if !coords.include?([x,y+1,z])
-    air_coords << [x,y-1,z] if !coords.include?([x,y-1,z])
-    air_coords << [x,y,z+1] if !coords.include?([x,y,z+1])
-    air_coords << [x,y,z-1] if !coords.include?([x,y,z-1])
+    neighbours(coord).each do |neighbour|
+      air_coords << neighbour if !coords.include?(neighbour)
+    end
   end
   air_coords
 end
@@ -48,13 +57,9 @@ while air_coords.size > 0
   while true
     grow_coords = Set.new
     new_coords.each do |coord|
-      x,y,z = coord
-      grow_coords.add([x+1,y,z]) if !rock_coords.include?([x+1,y,z]) && !bubble.include?([x+1,y,z]) && !new_coords.include?([x+1,y,z])
-      grow_coords.add([x-1,y,z]) if !rock_coords.include?([x-1,y,z]) && !bubble.include?([x-1,y,z]) && !new_coords.include?([x-1,y,z])
-      grow_coords.add([x,y+1,z]) if !rock_coords.include?([x,y+1,z]) && !bubble.include?([x,y+1,z]) && !new_coords.include?([x,y+1,z])
-      grow_coords.add([x,y-1,z]) if !rock_coords.include?([x,y-1,z]) && !bubble.include?([x,y-1,z]) && !new_coords.include?([x,y-1,z])
-      grow_coords.add([x,y,z+1]) if !rock_coords.include?([x,y,z+1]) && !bubble.include?([x,y,z+1]) && !new_coords.include?([x,y,z+1])
-      grow_coords.add([x,y,z-1]) if !rock_coords.include?([x,y,z-1]) && !bubble.include?([x,y,z-1]) && !new_coords.include?([x,y,z-1])
+      neighbours(coord).each do |neighbour|
+        grow_coords.add(neighbour) if !rock_coords.include?(neighbour) && !bubble.include?(neighbour) && !new_coords.include?(neighbour)
+      end
     end
 
     # inside rock
